@@ -91,6 +91,7 @@ export default function Valentine() {
   const [isOpening, setIsOpening] = useState(false);
 
   const envelopeRef = useRef<HTMLDivElement>(null);
+  const envelopeWrapperRef = useRef<HTMLDivElement>(null);
   const flapRef = useRef<HTMLDivElement>(null);
   const letterRef = useRef<HTMLDivElement>(null);
   const sealRef = useRef<HTMLDivElement>(null);
@@ -338,13 +339,15 @@ export default function Valentine() {
     const tl = gsap.timeline();
 
     // Envelope shake
-    tl.to(envelopeRef.current?.querySelector(".envelope-wrapper"), {
-      rotation: 3,
-      duration: 0.1,
-      repeat: 5,
-      yoyo: true,
-      ease: "power1.inOut",
-    });
+    if (envelopeWrapperRef.current) {
+      tl.to(envelopeWrapperRef.current, {
+        rotation: 3,
+        duration: 0.1,
+        repeat: 5,
+        yoyo: true,
+        ease: "power1.inOut",
+      });
+    }
 
     // Seal burst
     tl.to(sealRef.current, {
@@ -462,7 +465,7 @@ export default function Valentine() {
             ✨ Tap to open ✨
           </p>
 
-          <div className="envelope-wrapper relative" onClick={handleEnvelopeClick}>
+          <div ref={envelopeWrapperRef} className="envelope-wrapper relative" onClick={handleEnvelopeClick}>
             {/* Sparkles around envelope */}
             <div ref={sparklesRef} className="absolute inset-0 -m-8">
               <SparklesSVG className="sparkle absolute -top-4 -left-4 w-6 h-6 text-yellow-300" />
